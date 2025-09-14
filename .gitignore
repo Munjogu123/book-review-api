@@ -15,3 +15,4 @@ api/.env
 # uv stuff
 .python-version
 pyproject.toml
+uv.lock
