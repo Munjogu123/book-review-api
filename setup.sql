@@ -28,7 +28,7 @@ CREATE INDEX IF NOT EXISTS idx_book_data ON books USING GIN (data);
 
 
 -- Creating the reviews table
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE IF NOT EXISTS reviews (
     id VARCHAR PRIMARY KEY,
     user_id VARCHAR NOT NULL,
     book_id VARCHAR NOT NULL,
@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS books (
     FOREIGN KEY (book_id) REFERENCES books (id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_book_id ON books(id);
-CREATE INDEX IF NOT EXISTS idx_book_data ON books USING GIN (data);
+CREATE INDEX IF NOT EXISTS idx_book_id ON reviews(id);
+CREATE INDEX IF NOT EXISTS idx_book_data ON reviews USING GIN (data);
