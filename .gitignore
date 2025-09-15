@@ -16,3 +16,9 @@ api/.env
 .python-version
 pyproject.toml
 uv.lock
+
+# test directory
+tests/
+
+#pytest
+.pytest_cache
