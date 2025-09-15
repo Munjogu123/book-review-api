@@ -45,6 +45,17 @@ class BookCreate(BaseModel):
     isbn: Optional[str] = Field(None, description="The ISBN of the book")
 
 
+class BookUpdate(BaseModel):
+    title: str = Field(None, min_length=10, description="This is the title of the book")
+    author: str = Field(
+        None,
+        min_length=10,
+        max_length=100,
+        description="This is the name of the author",
+    )
+    isbn: Optional[str] = Field(None, description="The ISBN of the book")
+
+
 class Book(BaseModel):
     id: str = Field(default_factory=lambda v: str(uuid4()), description="The book's id")
     title: str = Field(min_length=10, description="This is the title of the book")

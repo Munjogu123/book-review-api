@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Creates indexes for faster queries
-CREATE INDEX IF NOT EXISTS idx_user_id ON users(id);
+CREATE INDEX IF NOT EXISTS idx_user_id ON users(created_at);
 CREATE INDEX IF NOT EXISTS idx_user_data ON users USING GIN (data);
 
 
@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS books (
     author VARCHAR NOT NULL,
     isbn VARCHAR,
     data JSONB NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_book_id ON books(id);
+CREATE INDEX IF NOT EXISTS idx_book_id ON books(created_at);
 CREATE INDEX IF NOT EXISTS idx_book_data ON books USING GIN (data);
 
 
@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (book_id) REFERENCES books (id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_reviews_id ON reviews(id);
+CREATE INDEX IF NOT EXISTS idx_reviews_id ON reviews(created_at);
 CREATE INDEX IF NOT EXISTS idx_reviews_data ON reviews USING GIN (data);
