@@ -5,11 +5,18 @@ from uuid import uuid4
 from pydantic import BaseModel, EmailStr, Field, field_serializer
 
 
-class UsersCreate(BaseModel):
+class UserCreate(BaseModel):
     username: str = Field(
         min_length=5, max_length=50, description="The name of the user"
     )
     email: EmailStr
+
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = Field(
+        None, min_length=5, max_length=50, description="The name of the user"
+    )
+    email: EmailStr | None = None
 
 
 class User(BaseModel):
@@ -20,6 +27,9 @@ class User(BaseModel):
     email: EmailStr
     created_at: Optional[datetime] = Field(
         default_factory=datetime.now, description="When the entry was created"
+    )
+    updated_at: Optional[datetime] = Field(
+        default_factory=datetime.now, description="When the entry was modified"
     )
 
     @field_serializer("created_at", when_used="json")
