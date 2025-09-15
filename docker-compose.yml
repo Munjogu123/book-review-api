@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./api:/api
+      - ./api:/app
 
   db:
     image: postgres:15
@@ -17,6 +17,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
 
 volumes:
   postgres-data:
