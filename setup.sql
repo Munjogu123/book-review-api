@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (book_id) REFERENCES books (id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_book_id ON reviews(id);
-CREATE INDEX IF NOT EXISTS idx_book_data ON reviews USING GIN (data);
+CREATE INDEX IF NOT EXISTS idx_reviews_id ON reviews(id);
+CREATE INDEX IF NOT EXISTS idx_reviews_data ON reviews USING GIN (data);
