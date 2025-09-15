@@ -27,7 +27,7 @@ class PostgresDb:
         self.pool = await asyncpg.create_pool(DATABASE_URL)
         return self
 
-    async def __aexit__(self):
+    async def __aexit__(self, exc_type, exc, tb):
         await self.pool.close()
 
     async def create_user(self, user_data: Dict[str, Any]) -> Dict[str, Any]:

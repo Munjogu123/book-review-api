@@ -52,6 +52,9 @@ class Book(BaseModel):
         min_length=10, max_length=100, description="This is the name of the author"
     )
     isbn: Optional[str] = Field(None, description="The ISBN of the book")
+    created_at: Optional[datetime] = Field(
+        default_factory=datetime.now, description="The date this entry was created"
+    )
 
 
 class ReviewCreate(BaseModel):
