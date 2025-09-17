@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from routers import books, users
+from routers import books, reviews, users
 
 load_dotenv()
 
@@ -10,3 +10,4 @@ app = FastAPI(
 )
 app.include_router(users.user_router)
 app.include_router(books.book_router)
+app.include_router(reviews.review_router)
