@@ -32,7 +32,7 @@ class User(BaseModel):
         default_factory=datetime.now, description="When the entry was modified"
     )
 
-    @field_serializer("created_at", when_used="json")
+    @field_serializer("created_at", "updated_at", when_used="json")
     def datetime_serialize(self, dt: datetime, _info):
         return dt.isoformat()
 
