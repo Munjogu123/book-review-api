@@ -116,4 +116,4 @@ With the server running, you can test using curl or visit the Swagger UI at <htt
 
 - Replace `user_id`, `book_id`, and `review_id` with actual IDs returned from POST requests.
 - All endpoints return JSON responses.
-- Use the built-in FastAPI docs for interactive testing at /docs.
+- Use the built-in FastAPI docs for interactive testing at `/docs`.
