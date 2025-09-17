@@ -72,7 +72,7 @@ pip install -r requirements.txt
 - Run FastAPI:
 
 ```bash
-uvicorn api.main:app --reload
+uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
 ## 🧪 Testing
