@@ -78,12 +78,6 @@ class ReviewCreate(BaseModel):
 
 
 class ReviewUpdate(BaseModel):
-    user_id: Optional[str] = Field(
-        None, description="This is the id of the user creating a review"
-    )
-    book_id: Optional[str] = Field(
-        None, description="This is the id of the book being reviewed"
-    )
     rating: Optional[float] = Field(
         None, ge=1, le=5, description="This is the rating of the book (1-5)"
     )
