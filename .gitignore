@@ -22,3 +22,7 @@ tests/
 
 #pytest
 .pytest_cache
+
+# terraform
+aws/terraform.tfstate
+aws/terraform.tfstate.backup
