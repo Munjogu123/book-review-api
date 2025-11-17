@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from api.main import app
 from api.routers.books import get_book_service
 from api.routers.reviews import get_review_service
+from api.routers.users import get_user_service
 
 
 @pytest.fixture
@@ -31,6 +32,11 @@ def review_payload():
         "rating": 4.5,
         "comment": "This was such an interesting read. Got to learn a lot and I have been applying some of the lessons I learned and I can already see some difference.",
     }
+
+
+@pytest.fixture
+def user_payload():
+    return {"id": "01", "username": "fredm", "email": "fredm@example.com"}
 
 
 @pytest.fixture
@@ -140,6 +146,59 @@ def mock_review_service():
 
 
 @pytest.fixture
+def mock_user_service():
+    class MockService:
+        def __init__(self):
+            self.db = AsyncMock()
+            self.create_user = self.db.create_user
+            self.get_user = self.db.get_user
+            self.get_users = self.db.get_users
+            self.update_user = self.db.update_user
+            self.delete_user = self.db.delete_user
+            self.delete_users = self.db.delete_users
+
+    service = MockService()
+
+    service.create_user.return_value = {
+        "id": "01",
+        "username": "fredm",
+        "email": "fredm@example.com",
+    }
+
+    service.get_user.return_value = {
+        "id": "01",
+        "username": "fredm",
+        "email": "fredm@example.com",
+    }
+
+    service.get_users.return_value = [
+        {
+            "id": "01",
+            "username": "fredm",
+            "email": "fredm@example.com",
+        },
+        {
+            "id": "02",
+            "username": "alext",
+            "email": "alext@example.com",
+        },
+    ]
+
+    service.update_user.return_value = {
+        "id": "01",
+        "username": "fredz",
+        "email": "fredz@example.com",
+    }
+
+    service.delete_user.return_value = {"detail": "Deleted user 01"}
+    service.delete_users.return_value = {"detail": "Deleted all users"}
+
+    app.dependency_overrides[get_user_service] = lambda: service
+    yield service
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
 def mock_book_service_error():
     class MockService:
         def __init__(self):
@@ -149,7 +208,6 @@ def mock_book_service_error():
             self.get_books = self.db.get_books
             self.update_book = self.db.update_book
             self.delete_book = self.db.delete_book
-            self.delete_books = self.db.delete_books
 
     service = MockService()
 
@@ -183,5 +241,29 @@ def mock_review_service_error():
     service.get_review.return_value = None
 
     app.dependency_overrides[get_review_service] = lambda: service
+    yield service
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def mock_user_service_error():
+    class MockService:
+        def __init__(self):
+            self.db = AsyncMock()
+            self.create_user = self.db.create_user
+            self.get_user = self.db.get_user
+            self.get_users = self.db.get_users
+            self.update_user = self.db.update_user
+            self.delete_user = self.db.delete_user
+
+    service = MockService()
+
+    service.create_user.side_effect = Exception("DB error")
+    service.get_user.return_value = None
+    service.get_users.side_effect = Exception("DB error")
+    service.update_user.return_value = None
+    service.delete_user.return_value = None
+
+    app.dependency_overrides[get_user_service] = lambda: service
     yield service
     app.dependency_overrides.clear()

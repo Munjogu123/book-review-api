@@ -54,13 +54,13 @@ async def update_user(
 ):
     partial_data = updated_data.model_dump(exclude_unset=True)
     updated_user = await user_service.update_user(user_id, partial_data)
-    if not update_user:
+    if not updated_user:
         raise HTTPException(status_code=404, detail="Entry not found")
 
     return updated_user
 
 
-@user_router.delete("/users/{entry_id}")
+@user_router.delete("/users/{user_id}")
 async def delete_user(
     user_id: str, user_service: UserService = Depends(get_user_service)
 ):
