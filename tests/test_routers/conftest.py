@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from api.main import app
 from api.routers.books import get_book_service
+from api.routers.reviews import get_review_service
 
 
 @pytest.fixture
@@ -13,11 +14,22 @@ def client():
 
 
 @pytest.fixture
-def payload():
+def book_payload():
     return {
         "title": "1984",
         "author": "George Owell",
         "isbn": "1234567890",
+    }
+
+
+@pytest.fixture
+def review_payload():
+    return {
+        "id": "100",
+        "user_id": "10",
+        "book_id": "1",
+        "rating": 4.5,
+        "comment": "This was such an interesting read. Got to learn a lot and I have been applying some of the lessons I learned and I can already see some difference.",
     }
 
 
@@ -75,6 +87,59 @@ def mock_book_service():
 
 
 @pytest.fixture
+def mock_review_service():
+    class MockService:
+        def __init__(self):
+            self.db = AsyncMock()
+            self.create_review = self.db.create_review
+            self.get_review = self.db.get_review
+            self.update_review = self.db.update_review
+            self.delete_review = self.db.delete_review
+
+        async def get_book_reviews(self, book_id):
+            return [
+                {
+                    "id": "100",
+                    "user_id": "10",
+                    "book_id": book_id,
+                    "rating": 4.5,
+                    "comment": "This was such an interesting read. Got to learn a lot and I have been applying some of the lessons I learned and I can already see some difference.",
+                },
+                {
+                    "id": "101",
+                    "user_id": "11",
+                    "book_id": book_id,
+                    "rating": 4.2,
+                    "comment": "I absolutely loved the book. I have a new perspective on life and how I can make it better. Highly recommend!",
+                },
+            ]
+
+    service = MockService()
+
+    service.create_review.return_value = {
+        "id": "100",
+        "user_id": "10",
+        "book_id": "1",
+        "rating": 4.5,
+        "comment": "This was such an interesting read. Got to learn a lot and I have been applying some of the lessons I learned and I can already see some difference.",
+    }
+
+    service.update_review.return_value = {
+        "id": "100",
+        "user_id": "10",
+        "book_id": "1",
+        "rating": 3.7,
+        "comment": "This was such an interesting read. Got to learn a lot and I have been applying some of the lessons I learned and I can already see some difference.",
+    }
+
+    service.delete_review.return_value = {"detail": "Deleted review 100"}
+
+    app.dependency_overrides[get_review_service] = lambda: service
+    yield service
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
 def mock_book_service_error():
     class MockService:
         def __init__(self):
@@ -95,5 +160,28 @@ def mock_book_service_error():
     service.delete_book.return_value = None
 
     app.dependency_overrides[get_book_service] = lambda: service
+    yield service
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def mock_review_service_error():
+    class MockService:
+        def __init__(self):
+            self.db = AsyncMock()
+            self.create_review = self.db.create_review
+            self.get_review = self.db.get_review
+            self.get_book_reviews = AsyncMock(return_value=None)
+            self.update_review = self.db.update_review
+            self.delete_review = self.db.delete_review
+
+    service = MockService()
+
+    service.create_review.side_effect = Exception("DB error")
+    service.update_review.return_value = None
+    service.delete_review.return_value = None
+    service.get_review.return_value = None
+
+    app.dependency_overrides[get_review_service] = lambda: service
     yield service
     app.dependency_overrides.clear()
