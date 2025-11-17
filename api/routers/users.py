@@ -1,9 +1,10 @@
 from typing import AsyncGenerator
 
-from db.users import PostgresDb
 from fastapi import APIRouter, Depends, HTTPException
-from models.entry import User, UserCreate, UserUpdate
-from services.users import UserService
+
+from api.db.users import PostgresDb
+from api.models.entry import User, UserCreate, UserUpdate
+from api.services.users import UserService
 
 user_router = APIRouter()
 

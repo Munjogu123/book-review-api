@@ -38,7 +38,7 @@ class User(BaseModel):
 
 
 class BookCreate(BaseModel):
-    title: str = Field(min_length=10, description="This is the title of the book")
+    title: str = Field(description="This is the title of the book")
     author: str = Field(
         min_length=10, max_length=100, description="This is the name of the author"
     )
@@ -46,7 +46,7 @@ class BookCreate(BaseModel):
 
 
 class BookUpdate(BaseModel):
-    title: str = Field(None, min_length=10, description="This is the title of the book")
+    title: str = Field(None, description="This is the title of the book")
     author: str = Field(
         None,
         min_length=10,
@@ -58,7 +58,7 @@ class BookUpdate(BaseModel):
 
 class Book(BaseModel):
     id: str = Field(default_factory=lambda v: str(uuid4()), description="The book's id")
-    title: str = Field(min_length=10, description="This is the title of the book")
+    title: str = Field(description="This is the title of the book")
     author: str = Field(
         min_length=10, max_length=100, description="This is the name of the author"
     )

@@ -1,9 +1,10 @@
 from typing import AsyncGenerator
 
-from db.books import PostgresDb
 from fastapi import APIRouter, Depends, HTTPException
-from models.entry import Book, BookCreate, BookUpdate
-from services.books import BookService
+
+from api.db.books import PostgresDb
+from api.models.entry import Book, BookCreate, BookUpdate
+from api.services.books import BookService
 
 book_router = APIRouter()
 
