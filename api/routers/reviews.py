@@ -1,9 +1,10 @@
 from typing import AsyncGenerator
 
-from db.reviews import PostgresDb
 from fastapi import APIRouter, Depends, HTTPException
-from models.entry import Review, ReviewCreate, ReviewUpdate
-from services.reviews import ReviewService
+
+from api.db.reviews import PostgresDb
+from api.models.entry import Review, ReviewCreate, ReviewUpdate
+from api.services.reviews import ReviewService
 
 review_router = APIRouter()
 

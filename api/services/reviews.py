@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List
 
-from db.reviews import PostgresDb
+from api.db.reviews import PostgresDb
 
 logger = logging.getLogger("__name__")
 

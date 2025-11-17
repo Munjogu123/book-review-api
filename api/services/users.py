@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List
 
-from db.users import PostgresDb
+from api.db.users import PostgresDb
 
 logger = logging.getLogger("__name__")
 
