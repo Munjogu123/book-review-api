@@ -53,7 +53,7 @@ async def update_review(
 ):
     partial_data = updated_data.model_dump(exclude_unset=True)
     updated_review = await review_service.update_review(review_id, partial_data)
-    if not update_review:
+    if not updated_review:
         raise HTTPException(status_code=404, detail="Entry not found")
 
     return updated_review

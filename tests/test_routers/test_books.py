@@ -1,5 +1,5 @@
-def test_create_book_success(client, mock_book_service, payload):
-    response = client.post("/books/", json=payload)
+def test_create_book_success(client, mock_book_service, book_payload):
+    response = client.post("/books/", json=book_payload)
 
     assert response.status_code == 200
     assert response.json()["detail"] == "Book created successfully"
@@ -8,8 +8,8 @@ def test_create_book_success(client, mock_book_service, payload):
     mock_book_service.create_book.assert_awaited_once()
 
 
-def test_create_book_failure(client, mock_book_service_error, payload):
-    response = client.post("/books/", json=payload)
+def test_create_book_failure(client, mock_book_service_error, book_payload):
+    response = client.post("/books/", json=book_payload)
 
     assert response.status_code == 400
     assert "Error creating book" in response.json()["detail"]
@@ -21,7 +21,7 @@ def test_get_book_success(client, mock_book_service):
     assert response.status_code == 200
     assert response.json()["title"] == "1984"
 
-    mock_book_service.db.get_book.assert_awaited_once_with("1")
+    mock_book_service.get_book.assert_awaited_once_with("1")
 
 
 def test_get_book_failure(client, mock_book_service_error):
